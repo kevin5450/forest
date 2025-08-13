@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Forest Subpage</title>
+  <link rel="stylesheet" href="./css/forestwebstyle.css" />
+  <link rel="website icon" type="png" href="./images/treeicon.jpg" />
+</head>
+<body>
+<main>
+  <div class="subpage-container">
+    <div class="top-row">
+      <section class="box box1">
+        <h3>3D visualization</h3>
+        <div>
+          <img src="./images/1번그림.jpg" alt="1번 그림" style="display:block;margin:0 auto;width:70%;">
+        </div>
+      </section>
+
+      <section class="box box2">
+        <h3>영농 일지</h3>
+        <span class="diary-date-badge"></span>
+        <div class="top-half">
+          <div class="summary"><h4>요약</h4></div>
+          <div id="issue"><h4>이슈발생</h4></div>
+        </div>
+        <div class="bottom-half">
+          <h4></h4>
+          <table id="issue-table">
+            <thead>
+              <tr><th class="col-time">발생 시간</th><th class="col-msg">내용</th></tr>
+            </thead>
+            <tbody>
+              <tr data-row="temp"><td class="time"></td><td class="msg">현재 이슈 없음</td></tr>
+              <tr data-row="hum"><td class="time"></td><td class="msg">현재 이슈 없음</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="box box3">
+        <h3>기상정보</h3>
+        <p><strong>지역:</strong> <span id="weather-city">로딩 중...</span></p>
+        <p><strong>날씨:</strong> <span id="weather-main">--</span></p>
+        <p><strong>온도:</strong> <span id="weather-temp">--</span>°C</p>
+        <img id="weather-icon" src="" alt="날씨 아이콘" style="width:60px;margin-top:10px;display:none;">
+        <p id="weather-updated-time" class="weather-update-time">업데이트 중...</p>
+        <p id="weather-countdown" class="weather-countdown">다음 업데이트까지: --초</p>
+      </section>
+    </div>
+
+    <div class="bottom-row">
+      <section class="box box4">
+        <h3>생장 시각화</h3>
+        <div>
+          <img src="./images/4번그림.jpg" alt="4번 그림" style="display:block;margin:0 auto;width:70%;">
+        </div>
+      </section>
+
+      <div class="right-stack">
+        <section class="box box5">
+          <h3 style="position:relative;">
+            센서 데이터 그래프
+            <!-- 오른쪽 위 토글 -->
+            <span style="position:absolute; right:0; top:0;">
+              <button id="metricToggle" class="mf-toggle-btn">온도 (°C)</button>
+              <div id="toggleMenu" class="mf-toggle-menu" aria-hidden="true">
+                <button data-metric="temp" data-label="온도 (°C)">온도 (°C)</button>
+                <button data-metric="humidity" data-label="습도 (%)">습도 (%)</button>
+                <button data-metric="lux" data-label="조도 (lx)">조도 (lx)</button>
+              </div>
+            </span>
+          </h3>
+
+          <!-- 그래프 3칸: 시간별 / 일별 / 월별 -->
+          <div class="mf-row3">
+            <figure class="mf-card">
+              <div id="chart_hourly" class="mf-plot"></div>
+              <figcaption class="mf-cap">시간별 센서데이터 변화 그래프</figcaption>
+            </figure>
+            <figure class="mf-card">
+              <div id="chart_daily" class="mf-plot"></div>
+              <figcaption class="mf-cap">일별 센서데이터 변화 그래프</figcaption>
+            </figure>
+            <figure class="mf-card">
+              <div id="chart_monthly" class="mf-plot"></div>
+              <figcaption class="mf-cap">월별 센서데이터 변화 그래프</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="box box6">
+          <h3>생장 예측</h3>
+          <div>
+            <img src="./images/6번그림.jpg" alt="6번 그림" style="display:block;margin:0 auto;width:70%;">
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="./weather.js"></script>
+<script src="./event.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="./graph.js"></script>
+</body>
+</html>
