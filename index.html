@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>babylon.js simulation</title>
+    <style>
+            html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #renderCanvas {
+      flex-grow: 1;
+      width: calc(100% - 300px);
+      height: 100%;
+      display: block;
+      touch-action: none;
+    }
+
+    .info-panel {
+      width: 255px;
+      height: 100%;
+      background-color: #f5f5f5;
+      padding: 8px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 500px) {
+      .info-panel {
+        width: 500px;
+      }
+    }
+
+        .control-buttons {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        .control-button {
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            flex: 1;
+        }
+        .control-button.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .reference-guide {
+            padding: 5px 10px;
+            background-color: white;
+            border-radius: 5px;
+            margin-bottom: 8px;
+        }
+        .cube-data {
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        .data-item {
+            margin-bottom: 5px;
+        }
+        .current-value-display {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 5px 0;
+            padding: 7px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        #current-value {
+            margin-right: 5px;
+        }
+        #current-unit {
+            font-size: 0.8em;
+        }
+        #cube-name {
+            font-size: 1em;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        .minimap-container {
+            padding: 0px;
+            background-color: white;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        #minimap {
+            width: 100%;      
+            height: 240px;    
+            background-color: #f5f5f5;
+            border: 1px solid #eee;
+            border-radius: 3px;
+        }
+
+        #hover-popup {
+            font-size: 16px;
+            min-width: 140px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            pointer-events: none; 
+        }
+
+        #hover-popup div {
+            margin: 3px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="renderCanvas"></canvas>
+        <div class="info-panel">
+            <div class="control-buttons">
+                <button class="control-button active" data-type="temperature">온도</button>
+                <button class="control-button" data-type="humidity">습도</button>
+                <button class="control-button" data-type="illuminance">조도</button>
+            </div>
+            <div class="reference-guide">
+                <!-- 기준표 내용은 동적으로 변경됨 -->
+            </div>
+            <div class="cube-data">
+                <div id="cube-name"></div> 
+                <div class="current-value-display">
+                    <span id="current-value">-</span>
+                    <span id="current-unit"></span>
+                </div>
+                <div class="data-item">온도: <span id="temp-value">-</span>°C</div>
+                <div class="data-item">습도: <span id="humidity-value">-</span>%</div>
+                <div class="data-item">조도: <span id="illuminance-value">-</span>lux</div>
+            </div>
+            <div class="minimap-container">
+                <canvas id="minimap"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- Babylon.js CDN -->
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylon.glTF2FileLoader.min.js"></script>
+  <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="greenhouse_3d_render.js"></script>
+  <!-- Hover Popup -->
+<div id="hover-popup"
+     style="display: none;
+            position: fixed;
+            bottom: 30px;
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            z-index: 9999;
+            font-size: 14px;
+            pointer-events: none;">
+    <div><strong id="hover-name">-</strong></div>
+    <div>온도: <span id="hover-temp">-</span>°C</div>
+    <div>습도: <span id="hover-humidity">-</span>%</div>
+    <div>조도: <span id="hover-illuminance">-</span>lux</div>
+</div>
+</body>
+</html>

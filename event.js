@@ -37,7 +37,7 @@ function pickStatement(T, H) {
   if (H >= 85)           return "습도가 매우 높아요. 제습/환기 필수";
   if (H <= 30)           return "습도가 매우 낮아요. 가습/관수 필요";
   if (T >= 28)           return "날씨가 더워요";
-  if (T > 18 && T < 28 && H > 40 && H < 75) return "오늘은 맑네요. 상태가 양호합니다.";
+  if (T > 18 && T < 28 && H > 40 && H < 75) return "맑네요. 상태가 양호합니다.";
   return "상태 판단 불가";
 }
 

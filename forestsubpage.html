@@ -21,8 +21,8 @@
         <h3>영농 일지</h3>
         <span class="diary-date-badge"></span>
         <div class="top-half">
-          <div class="summary"><h4>요약</h4></div>
-          <div id="issue"><h4>이슈발생</h4></div>
+          <div class="summary"><h4>어제 요약:</h4></div>
+          <div id="issue"><h4>이슈 발생</h4></div>
         </div>
         <div class="bottom-half">
           <h4></h4>
@@ -59,35 +59,33 @@
 
       <div class="right-stack">
         <section class="box box5">
-          <h3 style="position:relative;">
-            센서 데이터 그래프
-            <!-- 오른쪽 위 토글 -->
-            <span style="position:absolute; right:0; top:0;">
-              <button id="metricToggle" class="mf-toggle-btn">온도 (°C)</button>
-              <div id="toggleMenu" class="mf-toggle-menu" aria-hidden="true">
-                <button data-metric="temp" data-label="온도 (°C)">온도 (°C)</button>
-                <button data-metric="humidity" data-label="습도 (%)">습도 (%)</button>
-                <button data-metric="lux" data-label="조도 (lx)">조도 (lx)</button>
-              </div>
-            </span>
-          </h3>
+            <h3>센서 데이터 그래프</h3>
 
-          <!-- 그래프 3칸: 시간별 / 일별 / 월별 -->
-          <div class="mf-row3">
-            <figure class="mf-card">
-              <div id="chart_hourly" class="mf-plot"></div>
-              <figcaption class="mf-cap">시간별 센서데이터 변화 그래프</figcaption>
-            </figure>
-            <figure class="mf-card">
-              <div id="chart_daily" class="mf-plot"></div>
-              <figcaption class="mf-cap">일별 센서데이터 변화 그래프</figcaption>
-            </figure>
-            <figure class="mf-card">
-              <div id="chart_monthly" class="mf-plot"></div>
-              <figcaption class="mf-cap">월별 센서데이터 변화 그래프</figcaption>
-            </figure>
+          <!-- (중요) 토글은 h3 바깥, box5 기준 절대위치 -->
+          <button id="metricToggle" class="mf-toggle-btn" type="button"
+                  aria-haspopup="true" aria-expanded="false">온도 (°C)</button>
+          <div id="toggleMenu" class="mf-toggle-menu" aria-hidden="true">
+            <button data-metric="temp" data-label="온도 (°C)">온도 (°C)</button>
+            <button data-metric="humidity" data-label="습도 (%)">습도 (%)</button>
+            <button data-metric="lux" data-label="조도 (lx)">조도 (lx)</button>
           </div>
-        </section>
+
+            <!-- 그래프 3칸 -->
+            <div class="mf-row3">
+                <figure class="mf-card">
+                <div id="chart_hourly" class="mf-plot"></div>
+                <figcaption class="mf-cap">시간별 센서데이터 변화 그래프</figcaption>
+                </figure>
+                <figure class="mf-card">
+                <div id="chart_daily" class="mf-plot"></div>
+                <figcaption class="mf-cap">일별 센서데이터 변화 그래프</figcaption>
+                </figure>
+                <figure class="mf-card">
+                <div id="chart_monthly" class="mf-plot"></div>
+                <figcaption class="mf-cap">월별 센서데이터 변화 그래프</figcaption>
+                </figure>
+            </div>
+            </section>
 
         <section class="box box6">
           <h3>생장 예측</h3>
