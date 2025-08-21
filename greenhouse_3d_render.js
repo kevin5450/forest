@@ -146,7 +146,7 @@ class SensorData {
 
     generateRandomData() {
         return {
-            temperature: (Math.random() * (30 - 20) + 20).toFixed(1),
+            temperature: 30,
             humidity: (Math.random() * (80 - 40) + 40).toFixed(1),
             illuminance: Math.floor(Math.random() * (1000 - 100) + 100)
         };
@@ -775,3 +775,75 @@ createScene().then(scene => {
 window.addEventListener("resize", () => {
     engine.resize();
 });
+// === [추가] 모든 큐브 클릭 시 forestsubpage.html 오픈 + 큐브별 데이터 전달 ===
+(function bindAllCubesOpenWithData() {
+  function tryBind() {
+    const scene = window._sceneRef;
+    if (!scene || !BABYLON || !BABYLON.PointerEventTypes) {
+      setTimeout(tryBind, 100);
+      return;
+    }
+
+    if (scene.__cubeOpenAllBound) return; // 중복 방지
+    scene.__cubeOpenAllBound = true;
+
+    // 짧은 시간에 중복 오픈 방지 (기존 Cube1 바인더와의 충돌도 흡수)
+    let lastOpen = 0;
+
+    scene.onPointerObservable.add((pi) => {
+      if (pi.type !== BABYLON.PointerEventTypes.POINTERUP) return;
+
+      const now = Date.now();
+      if (now - lastOpen < 250) return; // 250ms 이내 중복 방지
+
+      const pick = pi.pickInfo;
+      if (!pick || !pick.hit || !pick.pickedMesh) return;
+
+      // 클릭된 파츠에서 루트 메시까지 올라가서 이름 확인
+      let node = pick.pickedMesh;
+      while (node && node.parent) node = node.parent;
+
+      // 이름이 "Cube숫자" 패턴인지 확인 (예: Cube1 ~ Cube64)
+      if (!node || typeof node.name !== "string") return;
+      const m = /^Cube(\d+)$/.exec(node.name);
+      if (!m) return;
+
+      const cubeName = node.name; // "Cube12" 같은 원본 이름
+      const cubeNum  = m[1];      // "12" (숫자 부분)
+
+      // sensorData에 있는 해당 큐브 데이터 스냅샷 만들기
+      // (없으면 빈 객체)
+      let data = {};
+      try {
+        if (window.sensorData && sensorData.dataMap) {
+          data = sensorData.dataMap.get(cubeName) || {};
+        }
+      } catch (_) {}
+
+      // 원하면 추가 메타도 포함 가능 (현재 모드, 타임스탬프 등)
+      const payload = {
+        cubeName,             // "Cube12"
+        cubeNum,              // "12"
+        mode: (window.sensorData && sensorData.currentMode) || null,
+        data,                 // { temperature, humidity, illuminance } 등
+        ts: Date.now()
+      };
+
+      // ★ 데이터 전달 방식: localStorage에 저장 + URL로 cube 파라미터 전달
+      //   새 탭에서도 같은 origin이면 localStorage 접근 가능.
+      //   subpage에서 `localStorage.getItem('cubeData:Cube12')`로 읽으면 됨.
+      try {
+        localStorage.setItem(`cubeData:${cubeName}`, JSON.stringify(payload));
+      } catch (e) {
+        console.warn("localStorage 저장 실패:", e);
+      }
+
+      // forestsubpage.html?cube=Cube12 형태로 오픈
+      const url = `forestsubpage.html?cube=${encodeURIComponent(cubeName)}`;
+      window.open(url, "_blank");
+
+      lastOpen = now;
+    });
+  }
+  tryBind();
+})();
